@@ -12,15 +12,21 @@
 <body class="bg-neutral-900 min-h-screen">
   <div class="h-screen grid place-items-center">
     <div class="grid place-items-center gap-12">
-      <div class="grid grid-cols-[max-content_max-content] place-items-center gap-4 text-white text-4xl">
+      <div id="profile-info"
+        class="grid grid-cols-[max-content_max-content] place-items-center gap-4 text-white text-4xl">
         <img id="avatar" class="rounded-full w-16 h-16" />
         <div id="name"></div>
       </div>
+      <!-- login -->
       <a id="login"
         href="https://discord.com/oauth2/authorize?client_id=1304225743479509094&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A1234%2Fauth%2Fdiscord&scope=identify"
         class="bg-[#7289da] hover:bg-[#5a75b1] p-2 rounded-md duration-300">
         <span class="text-white text-4xl font-semibold">Login with Discord</span>
       </a>
+      <!-- logout -->
+      <button id="logout" class="bg-neutral-500 hover:bg-neutral-600 p-2 rounded-md duration-300 hidden">
+        <span class="text-white text-4xl font-semibold">Logout</span>
+      </button>
     </div>
   </div>
 </body>
@@ -30,19 +36,35 @@
     const fragment = new URLSearchParams(window.location.hash.slice(1));
     const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
 
-    fetch('https://discord.com/api/users/@me', {
-      headers: {
-        authorization: `${tokenType} ${accessToken}`,
-      },
-    })
-      .then(result => result.json())
-      .then(response => {
-        const { username, id, avatar } = response;
+    if (accessToken) {
+      // display user data and logout button
+      document.getElementById("login").classList.add("hidden");
+      document.getElementById("logout").classList.remove("hidden");
 
-        document.getElementById('name').innerText = username;
-        document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`;
+
+      fetch('https://discord.com/api/users/@me', {
+        headers: {
+          authorization: `${tokenType} ${accessToken}`,
+        },
       })
-      .catch(console.error);
+        .then(result => result.json())
+        .then(response => {
+          const { username, id, avatar } = response;
+          document.getElementById('name').innerText = username;
+          document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`;
+          document.getElementById("profile-info").classList.remove("hidden")
+        })
+        .catch(console.error);
+    }
+
+    document.getElementById("logout").onclick = () => {
+      document.getElementById("profile-info").classList.add("hidden")
+      window.location.hash = ""; // removes token from URL
+      document.getElementById("name").innerText = "";
+      document.getElementById("avatar").src = "";
+      document.getElementById("login").classList.remove("hidden");
+      document.getElementById("logout").classList.add("hidden");
+    };
   };
 </script>
 
