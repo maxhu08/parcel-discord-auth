@@ -6,13 +6,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="styles/tailwind.css">
   <script src="scripts/index.ts" type="module" defer></script>
-  <title>Hello World!</title>
+  <title>Hello Discord!</title>
 </head>
 
 <body class="bg-neutral-900 min-h-screen">
   <div class="h-screen grid place-items-center">
-    <h1 class="text-white text-4xl font-semibold">Hello World!</h1>
+    <div class="grid place-items-center gap-12">
+      <div class="grid grid-cols-[max-content_max-content] place-items-center gap-4 text-white text-4xl">
+        <img id="avatar" class="rounded-full w-16 h-16" />
+        <div id="name"></div>
+      </div>
+      <a id="login"
+        href="https://discord.com/oauth2/authorize?client_id=1304225743479509094&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A1234%2Fauth%2Fdiscord&scope=identify"
+        class="bg-[#7289da] hover:bg-[#5a75b1] p-2 rounded-md duration-300">
+        <span class="text-white text-4xl font-semibold">Login with Discord</span>
+      </a>
+    </div>
   </div>
 </body>
+
+<script>
+  window.onload = () => {
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
+
+    fetch('https://discord.com/api/users/@me', {
+      headers: {
+        authorization: `${tokenType} ${accessToken}`,
+      },
+    })
+      .then(result => result.json())
+      .then(response => {
+        const { username, id, avatar } = response;
+
+        document.getElementById('name').innerText = username;
+        document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`;
+      })
+      .catch(console.error);
+  };
+</script>
 
 </html>
