@@ -26,7 +26,7 @@ go to oauth2 > add redirect & set it to `http://localhost:1234/auth/discord`
 
 go to auth2 url generator below it > check identify > select redirect url to the one you set earlier > copy generated url
 
-then set the `a` tag with id `login`, replace the href value of `#` with the url from the discord developer portal
+then set the `a` tag with id `login`, replace the href value of `#` with the url from the discord developer portal, but replace `response_type=code` with `response_type=token`
 
 that's it !
 
