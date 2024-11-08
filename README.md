@@ -1,6 +1,8 @@
-# parcel-discord-auth
+# parcel-discord-auth-token
 
 simple template that has discord oauth all setup, based off of my [simple-parcel-template](https://github.com/maxhu08/simple-parcel-template)
+
+this template uses `response_type=token` which is simpler to setup than `response_type=code`
 
 ## getting started
 
@@ -8,8 +10,8 @@ run these commands:
 
 ```shell
 # clone
-git clone https://github.com/maxhu08/parcel-discord-auth
-cd parcel-discord-auth
+git clone https://github.com/maxhu08/parcel-discord-auth-token
+cd parcel-discord-auth-token
 
 # remove git info
 rm -rf .git
