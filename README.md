@@ -1,6 +1,6 @@
 # parcel-discord-auth
 
-simple template that has discord oauth all setup, based off of my [simple-pacel-template](https://github.com/maxhu08/simple-parcel-template)
+simple template that has discord oauth all setup, based off of my [simple-parcel-template](https://github.com/maxhu08/simple-parcel-template)
 
 ## getting started
 
